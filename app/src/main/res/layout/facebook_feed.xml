@@ -1,0 +1,30 @@
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/swipeFb"
+    android:orientation="vertical"
+    android:weightSum="1" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="fill_parent"
+            android:text="pull to refresh"
+            android:textColor="@color/black"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:layout_height="12dp" />
+        <WebView
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:id="@+id/facebookWeb"
+            android:layout_height="0dp">
+        </WebView>
+    </LinearLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

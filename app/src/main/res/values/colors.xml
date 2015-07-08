@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#103178</color>
+    <color name="colorPrimaryDark">#103178</color>
+    <color name="colorPrimaryLight">#ff11378e</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="colorHighlight">#B6B6B6</color>
+    <color name="colorPrimaryText">#ffffff</color>
+    <color name="colorSecondaryText">#ffffff</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="red">#ffff2218</color>
+
+    <color name="wet_asphalt">#334960</color>
+    <color name="white">#ffffff</color>
+    <color name="wet_asphalt_alpha">#B3334960</color>
+    <color name="black">#ff000000</color>
+    <color name="golden">#ffffff</color>
+    <color name="clouds">#ECF0F1</color>
+    <color name="concrete">#95A5A5</color>
+    <color name="main_color">#0e3178</color>
+    <color name="belize_hole">#227FBC</color>
+    <color name="orange_light">#FFB61C</color>
+    <color name="blue_light">#ff39a7f0</color>
+    <color name="light_blue">#ff39a7f0</color>
+    <color name="youtube">#e52d27</color>
+    <color name="youtube_pressed">#b31217</color>
+    <color name="facebook">#3b5998</color>
+    <color name="facebook_pressed">#8b9dc3</color>
+    <color name="main">#fff5e3d4</color>
+    <color name="app_green">#ff47d937</color>
+    <color name="app_green_dark">#ff3f9e2f</color>
+
+    <color name="feed_bg">#d3d6db</color>
+    <color name="feed_item_bg">#ffffff</color>
+    <color name="feed_item_border">#c2c3c8</color>
+    <color name="link">#0a80d1</color>
+    <color name="timestamp">#a0a3a7</color>
+</resources>

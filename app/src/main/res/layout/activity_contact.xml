@@ -1,0 +1,128 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/main_background"
+    android:id="@+id/fragment_contact"
+    tools:context=".Contact"
+    android:weightSum="1"
+        >
+
+     <include
+         android:id="@+id/app_bar"
+         layout="@layout/app_bar" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Islamic Center Of Frisco"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_color"
+                    android:textAllCaps="true"
+                    android:textSize="25dp"
+                    android:gravity="center"
+                    android:id="@+id/title_contact"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:id="@+id/address"
+                    />
+            </LinearLayout>
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/call_btn"
+                android:text="(469) 252-4532"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_light"
+                android:drawableStart="@drawable/ic_action_call"
+                android:drawableLeft="@drawable/ic_action_call"
+                />
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/email_button"
+                android:text="Shura@friscomasjid.org"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:background="@color/blue_light"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_mail"
+                android:drawableLeft="@drawable/ic_action_mail"
+                />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_color"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:textSize="18dp"
+                android:text="Like Us On Facebook"/>
+
+            <com.facebook.share.widget.LikeView
+                android:id="@+id/like_view"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textAlignment="gravity"  />
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
