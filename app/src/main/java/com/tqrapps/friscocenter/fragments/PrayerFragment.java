@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,11 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  * Use the {@link PrayerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PrayerFragment extends Fragment  {
+public class PrayerFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -57,13 +53,13 @@ public class PrayerFragment extends Fragment  {
     private String mParam2;
     TextView todaysDate, fajrTime, fajrIqamah, dhuhrTime, dhuhrIqamah, asrTime, asrIqamah, maghribTime, maghribIqamah,
             ishaTime, ishaIqamah, timeText, iqamahText, sunrise_iqamah, sunrise_time;
-    TextView fajrText,dhuhrText,asrText,maghribText,ishaText,sunriseText;
+    TextView fajrText, dhuhrText, asrText, maghribText, ishaText, sunriseText;
     Context mContext;
     ButtonRectangle prev, today, next;
     ProgressDialog progressDialog;
     Calendar calMain = Calendar.getInstance();
-    int dayInt,position,nextMonthPosition;
-    String todayDate,nextMonthName,monthName;
+    int dayInt, position, nextMonthPosition;
+    String todayDate, nextMonthName, monthName;
     PrayersToday[] monthlyPrayer = new PrayersToday[31];
     PrayersToday[] nextMonth = new PrayersToday[31];
     Boolean nextB = true;
@@ -71,7 +67,7 @@ public class PrayerFragment extends Fragment  {
     LocalTime time;
 
     LocalTime nextPrayerTimes[] = new LocalTime[12];
-    String nextPrayerNames [] = new String[12];
+    String nextPrayerNames[] = new String[12];
     String iqamahOrTimes[] = new String[12];
     int nextPrayerTimeMin = 0;
     int nextPrayerTimeHours = 0;
@@ -81,12 +77,13 @@ public class PrayerFragment extends Fragment  {
 
 
     int once = 0;
-    private TextView  nextPrayerTimeText;
+    private TextView nextPrayerTimeText;
 
 
     public PrayerFragment() {
         // Required empty public constructor
     }
+
     public static PrayerFragment newInstance(String param1, String param2) {
         PrayerFragment fragment = new PrayerFragment();
         Bundle args = new Bundle();
@@ -140,31 +137,30 @@ public class PrayerFragment extends Fragment  {
         dayInt = calMain.get(Calendar.DAY_OF_MONTH);
         position = dayInt;
         nextMonthPosition = 1;
-        nextMonthName = (getMonthForInt(calMain.get(Calendar.MONTH)+1));
+        nextMonthName = (getMonthForInt(calMain.get(Calendar.MONTH) + 1));
         monthName = (getMonthForInt(calMain.get(Calendar.MONTH)));
         today = (ButtonRectangle) pt.findViewById(R.id.today);
         prev = (ButtonRectangle) pt.findViewById(R.id.prev);
         next = (ButtonRectangle) pt.findViewById(R.id.next);
 
 
-
         timeText.setTypeface(font);
         iqamahText.setTypeface(font);
         todaysDate.setTypeface(font);
-        fajrText .setTypeface(font);
-        dhuhrText .setTypeface(font);
+        fajrText.setTypeface(font);
+        dhuhrText.setTypeface(font);
         asrText.setTypeface(font);
-        maghribText .setTypeface(font);
+        maghribText.setTypeface(font);
         ishaText.setTypeface(font);
         sunriseText.setTypeface(font);
-        fajrIqamah .setTypeface(font);
-        fajrTime .setTypeface(font);
+        fajrIqamah.setTypeface(font);
+        fajrTime.setTypeface(font);
         dhuhrIqamah.setTypeface(font);
-        dhuhrTime .setTypeface(font);
+        dhuhrTime.setTypeface(font);
         asrTime.setTypeface(font);
         asrIqamah.setTypeface(font);
         maghribIqamah.setTypeface(font);
-        maghribTime .setTypeface(font);
+        maghribTime.setTypeface(font);
         ishaIqamah.setTypeface(font);
         ishaTime.setTypeface(font);
         sunrise_iqamah.setTypeface(font);
@@ -174,7 +170,7 @@ public class PrayerFragment extends Fragment  {
         int min = dt.getMinuteOfHour();     // gets the min of hour
         int hour = dt.getHourOfDay(); // gets hour of day
         int seconds = dt.getSecondOfMinute();
-        time = new LocalTime(hour,min ,seconds);
+        time = new LocalTime(hour, min, seconds);
 
 
         mContext = pt.getContext();
@@ -210,10 +206,11 @@ public class PrayerFragment extends Fragment  {
         Calendar cal = Calendar.getInstance();
         int dayInt = cal.get(Calendar.DAY_OF_MONTH);
         String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+
         @Override
         protected String doInBackground(String... params) {
             try {
-                for(int i=0; i<31; i++){
+                for (int i = 0; i < 31; i++) {
                     monthlyPrayer[i] = new PrayersToday();
                 }
                 todayDate = monthName + " " + String.valueOf(day + ", " + String.valueOf(cal.get(Calendar.YEAR)));
@@ -221,7 +218,7 @@ public class PrayerFragment extends Fragment  {
 
                 DefaultHttpClient httpclient = new DefaultHttpClient();
                 int currentMonth = calMain.get(Calendar.MONTH);
-               // Log.d("month", "currentMonth " + currentMonth);
+                // Log.d("month", "currentMonth " + currentMonth);
 
                 HttpGet httppost = null;
                 httppost = getHtppPost(currentMonth);
@@ -236,11 +233,10 @@ public class PrayerFragment extends Fragment  {
                 int count = 0;
                 while ((line = r.readLine()) != null) {
                     String[] pt = line.split("\t+");
-                    if(count < 9){
-                        date = pt[0].substring(1,2);
-                    }
-                    else
-                        date = pt[0].substring(0,2);
+                    if (count < 9) {
+                        date = pt[0].substring(1, 2);
+                    } else
+                        date = pt[0].substring(0, 2);
 
                     monthlyPrayer[count].setDate((date));
                     monthlyPrayer[count].setFajrTime((pt[2]));
@@ -258,25 +254,26 @@ public class PrayerFragment extends Fragment  {
                 }
 
                 setTimeToNextPrayer();
-            }
-            catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
         @Override
         protected void onPreExecute() {
 
         }
+
         @Override
         protected void onPostExecute(String result) {
-            if(once == 0 && nextB){
+            if (once == 0 && nextB) {
                 PrayersToday nextPrayer = monthlyPrayer[position - 1];
                 String todayDate = monthName + " " + String.valueOf(nextPrayer.getDate() + ", " + String.valueOf(calMain.get(Calendar.YEAR)));
                 Calendar c = Calendar.getInstance();
-                Date date = new Date(calMain.get(Calendar.YEAR),calMain.get(Calendar.MONTH),position-1);
+                Date date = new Date(calMain.get(Calendar.YEAR), calMain.get(Calendar.MONTH), position - 1);
                 c.setTime(date);
                 fajrTime.setText(nextPrayer.getFajrTime());
                 fajrIqamah.setText(nextPrayer.getFajrIqamah());
@@ -290,20 +287,18 @@ public class PrayerFragment extends Fragment  {
                 maghribIqamah.setText(nextPrayer.getMaghribIqamah());
                 ishaTime.setText(nextPrayer.getIshaTime());
                 ishaIqamah.setText(nextPrayer.getIshaIqamah());
-                if(position == dayInt){
+                if (position == dayInt) {
                     todaysDate.setTextColor(getResources().getColor(R.color.colorPrimary));
                     String dayOfWeek = getDayOfWeek(calMain.get(Calendar.DAY_OF_WEEK));
                     todaysDate.setText("Today's Date: " + dayOfWeek + " | " + todayDate);
-                }
-                else{
+                } else {
                     todaysDate.setTextColor(getResources().getColor(R.color.black));
                     String dayOfWeek = getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
-                    todaysDate.setText("               Date: "  + dayOfWeek + " | " + todayDate);
+                    todaysDate.setText("               Date: " + dayOfWeek + " | " + todayDate);
                 }
 
                 setCountdown();
-            }
-            else if (once == 0) {
+            } else if (once == 0) {
                 //Log.d("Here","here");
                 PrayersToday nextPrayer = monthlyPrayer[position - 1];
                 String todayDate = monthName + " " + String.valueOf(nextPrayer.getDate() + ", " + String.valueOf(calMain.get(Calendar.YEAR)));
@@ -339,41 +334,42 @@ public class PrayerFragment extends Fragment  {
         }
 
 
-
     }
 
-    private class nextButton extends AsyncTask<String, Void, String>{
+    private class nextButton extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
-            if(once == 0 ){
+            if (once == 0) {
                 progressDialog = new ProgressDialog(mContext);
                 progressDialog.setMessage("Updating...");
                 progressDialog.show();
             }
 
         }
+
         @Override
         protected String doInBackground(String... strings) {
-            if(once == 0) {
+            if (once == 0) {
                 new SetData().execute();
                 //Log.d("SetData","Set Data executed");
             }
             return null;
 
         }
+
         @Override
         protected void onPostExecute(String s) {
-            if(progressDialog!= null){
+            if (progressDialog != null) {
                 progressDialog.dismiss();
             }
 
             position++;
             int numDays = calMain.getActualMaximum(Calendar.DAY_OF_MONTH);
-            if(position < numDays+1 && position > 0 && once != 0) {
+            if (position < numDays + 1 && position > 0 && once != 0) {
                 PrayersToday nextPrayer = monthlyPrayer[position - 1];
                 String todayDate = monthName + " " + String.valueOf(nextPrayer.getDate() + ", " + String.valueOf(calMain.get(Calendar.YEAR)));
                 Calendar c = Calendar.getInstance();
-                Date date = new Date(calMain.get(Calendar.YEAR),calMain.get(Calendar.MONTH),position-1);
+                Date date = new Date(calMain.get(Calendar.YEAR), calMain.get(Calendar.MONTH), position - 1);
                 c.setTime(date);
                 fajrTime.setText(nextPrayer.getFajrTime());
                 fajrIqamah.setText(nextPrayer.getFajrIqamah());
@@ -387,30 +383,28 @@ public class PrayerFragment extends Fragment  {
                 maghribIqamah.setText(nextPrayer.getMaghribIqamah());
                 ishaTime.setText(nextPrayer.getIshaTime());
                 ishaIqamah.setText(nextPrayer.getIshaIqamah());
-                if(position == dayInt){
+                if (position == dayInt) {
                     todaysDate.setTextColor(getResources().getColor(R.color.colorPrimary));
                     String dayOfWeek = getDayOfWeek(calMain.get(Calendar.DAY_OF_WEEK));
                     todaysDate.setText("Today's Date: " + dayOfWeek + " | " + todayDate);
-                }
-                else{
+                } else {
                     todaysDate.setTextColor(getResources().getColor(R.color.black));
                     String dayOfWeek = getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
-                    todaysDate.setText("Date: "  + dayOfWeek + " | " + todayDate);
+                    todaysDate.setText("Date: " + dayOfWeek + " | " + todayDate);
                 }
 
-            }
-            else if (position > numDays) {
+            } else if (position > numDays) {
 
-                if( (nextMonth[nextMonthPosition-1]!= null) && (nextMonth[nextMonthPosition-1].getFajrIqamah().length() > 2)){
+                if ((nextMonth[nextMonthPosition - 1] != null) && (nextMonth[nextMonthPosition - 1].getFajrIqamah().length() > 2)) {
 
                     Calendar c = Calendar.getInstance();
-                    c.set(calMain.get(Calendar.YEAR),c.get(Calendar.MONTH)+1,nextMonthPosition);
+                    c.set(calMain.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, nextMonthPosition);
 //                    if(calMain.get(Calendar.MONTH) == 11){
 //                        c.add(Calendar.YEAR, 1);
 //                    }
 
                     String nextMonthDate = nextMonthName + " " + String.valueOf(nextMonthPosition + ", " + String.valueOf(c.get(Calendar.YEAR)));
-                    PrayersToday today = nextMonth[nextMonthPosition-1];
+                    PrayersToday today = nextMonth[nextMonthPosition - 1];
                     fajrTime.setText(today.getFajrTime());
                     fajrIqamah.setText(today.getFajrIqamah());
                     sunrise_iqamah.setText((today.getSunrise()));
@@ -426,13 +420,12 @@ public class PrayerFragment extends Fragment  {
                     todaysDate.setTextColor(getResources().getColor(R.color.black));
                     String dayOfWeek = getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
                     todaysDate.setText("Date: " + dayOfWeek + " | " + nextMonthDate);
-                    if(nextMonthPosition > 27){
+                    if (nextMonthPosition > 27) {
                         nextMonthPosition = 1;
                     }
                     nextMonthPosition++;
 
-                }
-                else
+                } else
                     new SetNextMonth().execute();
             }
             //   Log.d("","nextMonthPosition after Next: " + nextMonthPosition);
@@ -451,6 +444,7 @@ public class PrayerFragment extends Fragment  {
                 progressDialog.show();
             }
         }
+
         @Override
         protected String doInBackground(String... strings) {
             if (once == 0) {
@@ -462,7 +456,7 @@ public class PrayerFragment extends Fragment  {
 
         @Override
         protected void onPostExecute(String s) {
-            if(progressDialog!= null){
+            if (progressDialog != null) {
                 progressDialog.dismiss();
             }
             int numDays = calMain.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -527,14 +521,14 @@ public class PrayerFragment extends Fragment  {
         }
     }
 
-    public void setToday(){
+    public void setToday() {
         position = dayInt;
         nextMonthPosition = 1;
-        if(position < 32 && position > 0) {
+        if (position < 32 && position > 0) {
             PrayersToday nextPrayer = monthlyPrayer[position - 1];
             String month = getMonthForInt(calMain.get(Calendar.MONTH));
-            if(once != 0){
-                 String todayDate = month + " " + String.valueOf(nextPrayer.getDate() + ", " + String.valueOf(calMain.get(Calendar.YEAR)));
+            if (once != 0) {
+                String todayDate = month + " " + String.valueOf(nextPrayer.getDate() + ", " + String.valueOf(calMain.get(Calendar.YEAR)));
                 fajrTime.setText(nextPrayer.getFajrTime());
                 fajrIqamah.setText(nextPrayer.getFajrIqamah());
                 sunrise_iqamah.setText((nextPrayer.getSunrise()));
@@ -552,8 +546,7 @@ public class PrayerFragment extends Fragment  {
                 todaysDate.setText("Today's Date: " + dayOfWeek + " | " + todayDate);
             }
 
-        }
-        else
+        } else
             position = dayInt;
     }
 
@@ -561,13 +554,13 @@ public class PrayerFragment extends Fragment  {
         protected String doInBackground(String... params) {
 
             try {
-                for(int i=0; i<31; i++){
+                for (int i = 0; i < 31; i++) {
                     nextMonth[i] = new PrayersToday();
 
                 }
                 DefaultHttpClient httpclient = new DefaultHttpClient();
                 int nextMonthInt = calMain.get(Calendar.MONTH);
-                if(nextMonthInt != 11)
+                if (nextMonthInt != 11)
                     nextMonthInt++;
                 else
                     nextMonthInt = 0;
@@ -581,11 +574,10 @@ public class PrayerFragment extends Fragment  {
                 int count = 0;
                 while ((line = r.readLine()) != null) {
                     String[] pt = line.split("\t+");
-                    if(count < 9){
-                        date = pt[0].substring(1,2);
-                    }
-                    else
-                        date = pt[0].substring(0,2);
+                    if (count < 9) {
+                        date = pt[0].substring(1, 2);
+                    } else
+                        date = pt[0].substring(0, 2);
 
                     nextMonth[count].setDate((date));
                     nextMonth[count].setFajrTime((pt[2]));
@@ -601,26 +593,25 @@ public class PrayerFragment extends Fragment  {
                     nextMonth[count].setIshaIqamah((pt[12]));
                     count++;
                 }
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(mContext);
             progressDialog.setMessage("Getting Next Month...");
             progressDialog.show();
         }
+
         @Override
         protected void onPostExecute(String result) {
             Calendar c = Calendar.getInstance();
-            c.set(c.get(Calendar.YEAR),c.get(Calendar.MONTH)+1,nextMonthPosition);
+            c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, nextMonthPosition);
             String nextMonthDate = nextMonthName + " " + String.valueOf(nextMonthPosition + ", " + String.valueOf(c.get(Calendar.YEAR)));
-            PrayersToday today = nextMonth[nextMonthPosition-1];
+            PrayersToday today = nextMonth[nextMonthPosition - 1];
             fajrTime.setText(today.getFajrTime());
             fajrIqamah.setText(today.getFajrIqamah());
             sunrise_iqamah.setText((today.getSunrise()));
@@ -636,11 +627,11 @@ public class PrayerFragment extends Fragment  {
             todaysDate.setTextColor(getResources().getColor(R.color.black));
             String dayOfWeek = getDayOfWeek(c.get(Calendar.DAY_OF_WEEK));
             todaysDate.setText("Date: " + dayOfWeek + " | " + nextMonthDate);
-            if(nextMonthPosition > 27){
+            if (nextMonthPosition > 27) {
                 nextMonthPosition = 1;
             }
             nextMonthPosition++;
-            if(progressDialog!= null){
+            if (progressDialog != null) {
                 progressDialog.dismiss();
             }
         }
@@ -680,10 +671,10 @@ public class PrayerFragment extends Fragment  {
         String month = "error";
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] months = dfs.getMonths();
-        if (num == 12){
+        if (num == 12) {
             num = 0;
         }
-        if (num >= 0 && num <= 11 ) {
+        if (num >= 0 && num <= 11) {
             month = months[num];
         }
         return month;
@@ -700,10 +691,9 @@ public class PrayerFragment extends Fragment  {
         int id = item.getItemId();
         if (id == R.id.actionbar_refresh) {
             new SetData().execute();
-            Toast.makeText(getActivity().getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
             return true;
-        }
-        else if (id == R.id.actionbar_share) {
+        } else if (id == R.id.actionbar_share) {
             shareIt();
             return true;
         }
@@ -720,8 +710,7 @@ public class PrayerFragment extends Fragment  {
     }
 
     //  HttpGet httppost = new HttpGet("http://ahqiplano.org/friscomasjid/"+currentMonth +".txt");
-    public HttpGet getHtppPost(int currentMonth)
-    {
+    public HttpGet getHtppPost(int currentMonth) {
         HttpGet httppost = null;
         if (currentMonth == 0) {
             httppost = new HttpGet("https://drive.google.com/uc?export=download&id=0B0fZ1fbGsSxZVXl6TnFLXzNNSUU");
@@ -752,10 +741,10 @@ public class PrayerFragment extends Fragment  {
     }
 
     private void setCountdown() {
-        if(countDownTimer != null) {
+        if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        final long miliseconds = (nextPrayerTimeHours * 3600000) + (60000*nextPrayerTimeMin) + (nextPrayerTimeSeconds*1000);
+        final long miliseconds = (nextPrayerTimeHours * 3600000) + (60000 * nextPrayerTimeMin) + (nextPrayerTimeSeconds * 1000);
         final String FORMAT = "%2d:%2d:%2d";
         countDownTimer = new CountDownTimer(miliseconds, 1000) {
 
@@ -775,9 +764,9 @@ public class PrayerFragment extends Fragment  {
     }
 
     private void setTimeToNextPrayer() {
-        for(int i=0; i< nextPrayerTimes.length; i++){
-            nextPrayerTimes[i] = new LocalTime(0,0,0);
-            nextPrayerNames[i] = new String();
+        for (int i = 0; i < nextPrayerTimes.length; i++) {
+            nextPrayerTimes[i] = new LocalTime(0, 0, 0);
+            nextPrayerNames[i] = "";
         }
 
         PrayersToday todayPrayer = monthlyPrayer[position - 1];
@@ -785,101 +774,101 @@ public class PrayerFragment extends Fragment  {
         int countNextPrayer = 0;
         String tempPrayer = todayPrayer.getFajrTime();
         int hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        int min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":")+1,tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min,0);
+        int min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min, 0);
         nextPrayerNames[countNextPrayer] = "FAJR";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getFajrIqamah();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min, 0);
         nextPrayerNames[countNextPrayer] = "FAJR";
         iqamahOrTimes[countNextPrayer] = "iqamah in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getSunrise();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min, 0);
         nextPrayerNames[countNextPrayer] = "SUNRISE";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getDhuhrTime();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        if(hour == 12)
-            nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        if (hour == 12)
+            nextPrayerTimes[countNextPrayer] = new LocalTime(hour, min, 0);
         else
-            nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+            nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "DHUHR";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getDhuhrIqamah();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "DHUHR";
         iqamahOrTimes[countNextPrayer] = "iqamah in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getAsrTime();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "ASR";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getAsrIqamah();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "ASR";
         iqamahOrTimes[countNextPrayer] = "iqamah in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getMaghribTime();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "MAGHRIB";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getMaghribIqamah();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "MAGHRIB";
         iqamahOrTimes[countNextPrayer] = "iqamah in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getIshaTime();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "ISHA";
         iqamahOrTimes[countNextPrayer] = "time in";
         countNextPrayer++;
 
         tempPrayer = todayPrayer.getIshaIqamah();
         hour = Integer.parseInt(tempPrayer.substring(0, tempPrayer.indexOf(":")));
-        min  = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
-        nextPrayerTimes[countNextPrayer] = new LocalTime(hour+12, min,0);
+        min = Integer.parseInt(tempPrayer.substring(tempPrayer.indexOf(":") + 1, tempPrayer.length()));
+        nextPrayerTimes[countNextPrayer] = new LocalTime(hour + 12, min, 0);
         nextPrayerNames[countNextPrayer] = "ISHA";
         iqamahOrTimes[countNextPrayer] = "iqamah in";
         countNextPrayer++;
 
 
-        for(int i=0; i< nextPrayerTimes.length; i++){
+        for (int i = 0; i < nextPrayerTimes.length; i++) {
             //Log.d("Time","Time Before IF: " + time.toString());
-            if(time.isBefore(nextPrayerTimes[i])) {
-                 //Log.d("Time","Time: " + time.toString());
-                 //Log.d("Time","Next: " + nextPrayerTimes[i].toString());
+            if (time.isBefore(nextPrayerTimes[i])) {
+                //Log.d("Time","Time: " + time.toString());
+                //Log.d("Time","Next: " + nextPrayerTimes[i].toString());
                 nextPrayerTimeMin = nextPrayerTimes[i].getMinuteOfHour() - time.getMinuteOfHour();
                 nextPrayerTimeSeconds = nextPrayerTimes[i].getSecondOfMinute() - time.getSecondOfMinute();
                 nextPrayerTimeHours = nextPrayerTimes[i].getHourOfDay() - time.getHourOfDay();
@@ -889,19 +878,18 @@ public class PrayerFragment extends Fragment  {
 
         }
 
-        if(nextPrayerTimeHours == 0 && nextPrayerTimeMin ==0){
+        if (nextPrayerTimeHours == 0 && nextPrayerTimeMin == 0) {
 
             PrayersToday tomorrowPrayer = monthlyPrayer[position];
             //Log.d("Time","Last If: " + tomorrowPrayer.getFajrTime());
             String fajrPrayer = tomorrowPrayer.getFajrTime();
             int hourTom = Integer.parseInt(fajrPrayer.substring(0, fajrPrayer.indexOf(":")));
-            int minTom  = Integer.parseInt(fajrPrayer.substring(fajrPrayer.indexOf(":")+1,fajrPrayer.length()));
-            LocalTime nextDayFajrTime = new LocalTime(hourTom, minTom,0);
+            int minTom = Integer.parseInt(fajrPrayer.substring(fajrPrayer.indexOf(":") + 1, fajrPrayer.length()));
+            LocalTime nextDayFajrTime = new LocalTime(hourTom, minTom, 0);
             nextPrayerTimeMin = nextDayFajrTime.getMinuteOfHour() + time.getMinuteOfHour();
-            nextPrayerTimeSeconds = nextDayFajrTime.getSecondOfMinute() +  time.getSecondOfMinute();
+            nextPrayerTimeSeconds = nextDayFajrTime.getSecondOfMinute() + time.getSecondOfMinute();
             nextPrayerTimeHours = nextDayFajrTime.getHourOfDay() + (24 - time.getHourOfDay());
             nextPrayerNameIndex = 0;
-            countNextPrayer++;
 
         }
     }
